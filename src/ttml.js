@@ -33,39 +33,55 @@ function getTiming(element, inherited, frameRate) {
   const end = parseTime(element.getAttribute("end"), frameRate);
   const dur = parseTime(element.getAttribute("dur"), frameRate);
   const startMs = begin == null ? inherited?.startMs ?? null : (inherited?.startMs ?? 0) + begin;
-  let endMs = end == null ? (dur == null ? inherited?.endMs ?? null : (startMs ?? 0) + dur) : (inherited?.startMs ?? 0) + end;
+  let endMs = end == null
+    ? (dur == null ? inherited?.endMs ?? null : (startMs ?? 0) + dur)
+    : (inherited?.startMs ?? 0) + end;
   if (startMs != null && endMs != null && endMs < startMs) endMs = startMs;
   return { startMs, endMs };
 }
 
-function textWords(text, timing) {
+function appendTextWords(text, timing, state, output) {
   const tokens = text.trim().split(/\s+/u).filter(Boolean);
-  if (!tokens.length || timing.startMs == null || timing.endMs == null) return [];
+  if (!tokens.length || timing.startMs == null || timing.endMs == null) {
+    if (/\s/u.test(text)) state.pendingSpace = true;
+    return;
+  }
+
   const duration = timing.endMs - timing.startMs;
-  return tokens.map((token, index) => ({
-    text: token,
-    startMs: timing.startMs + duration * index / tokens.length,
-    endMs: timing.startMs + duration * (index + 1) / tokens.length
-  }));
+  tokens.forEach((token, index) => {
+    const separatorBefore = output.length === 0
+      ? ""
+      : (index > 0 || state.pendingSpace ? " " : "");
+    output.push({
+      text: token,
+      separatorBefore,
+      startMs: timing.startMs + duration * index / tokens.length,
+      endMs: timing.startMs + duration * (index + 1) / tokens.length
+    });
+    state.pendingSpace = false;
+  });
+  if (/\s$/u.test(text)) state.pendingSpace = true;
 }
 
 function collectTimedWords(node, inherited, frameRate, output, state) {
   if (node.nodeType === Node.TEXT_NODE) {
-    textWords(node.nodeValue ?? "", inherited, state, output);
+    appendTextWords(node.nodeValue ?? "", inherited, state, output);
     return;
   }
   if (node.nodeType !== Node.ELEMENT_NODE) return;
 
-  const tag = node.localName?.toLowerCase();
-  if (tag === "br") return;
+  if (node.localName?.toLowerCase() === "br") {
+    state.pendingSpace = true;
+    return;
+  }
+
   const timing = getTiming(node, inherited, frameRate);
-  const childElements = [...node.children];
-  const hasTimedChildren = childElements.some(child =>
+  const hasTimedChildren = [...node.children].some(child =>
     child.hasAttribute("begin") || child.hasAttribute("end") || child.hasAttribute("dur")
   );
 
-  if (tag === "span" && !hasTimedChildren) {
-    textWords(node.textContent ?? "", timing, state, output);
+  if (node.localName?.toLowerCase() === "span" && !hasTimedChildren) {
+    appendTextWords(node.textContent ?? "", timing, state, output);
     return;
   }
 
@@ -75,9 +91,9 @@ function collectTimedWords(node, inherited, frameRate, output, state) {
 }
 
 /**
- * Parse a TTML/DFXP document into the renderer's line/word timing format.
- * Supports clock timestamps, offset timestamps (h/m/s/ms/f/t), timed spans,
- * nested spans, and untimed text distributed across its enclosing interval.
+ * Parse a TTML/DFXP document into line and timed-word objects.
+ * Supports clock and offset timestamps, timed/nested spans, and syllable spans.
+ * Adjacent timed spans remain adjacent unless the XML contains whitespace between them.
  */
 export function parseTtml(source) {
   if (typeof source !== "string" || !source.trim()) {
