@@ -1,4 +1,4 @@
-const TIME_RE = /^(?:(\d+):)?(\d{2}):(\d{2})(?:\.(\d+))?$/;
+const TIME_RE = /^(?:(\d+):)?(\d{1,2}):(\d{2})(?:\.(\d+))?$/;
 
 function parseTime(value, frameRate = 30) {
   if (typeof value !== "string") return null;
@@ -10,6 +10,10 @@ function parseTime(value, frameRate = 30) {
     const factors = { h: 3600000, m: 60000, s: 1000, ms: 1, f: 1000 / frameRate, t: 1 };
     return amount * factors[unit];
   }
+
+  // Apple Music TTML uses bare decimal seconds (for example, 13.919)
+  // as well as MM:SS.mmm clock values (for example, 2:42.465).
+  if (/^\\d+(?:\\.\\d+)?$/.test(input)) return Number(input) * 1000;
 
   const clock = input.match(TIME_RE);
   if (clock) {
