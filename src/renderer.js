@@ -111,7 +111,8 @@ export class SpicyLyrics {
     const fragment = document.createDocumentFragment();
 
     line.words.forEach((word, index) => {
-      if (index > 0) fragment.append(document.createTextNode(" "));
+      const separator = word.separatorBefore ?? (index > 0 ? " " : "");
+      if (separator) fragment.append(document.createTextNode(separator));
 
       const letterGroup = canUseLetterEffects(word, this.options);
       const span = document.createElement("span");
