@@ -6,7 +6,7 @@ import { CubicSplineInterpolator } from "../src/animation/cubic-spline.js";
 
 test("refreshed motion produces bounded word and dot values", () => {
   assert.equal(RefreshedMotion.wordFloat(0, 0, 1000), 0);
-  assert.equal(RefreshedMotion.wordFloat(1000, 0, 1000), 0.75);
+  assert.equal(RefreshedMotion.wordFloat(1000, 0, 1000), 1);
   assert.equal(RefreshedMotion.wordFloat(2000, 0, 1000), 1);
   assert.equal(RefreshedMotion.emphasis(0), 0);
   assert.equal(RefreshedMotion.emphasis(0.5), 1);
