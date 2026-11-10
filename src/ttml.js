@@ -110,7 +110,8 @@ export function parseTtml(source) {
     );
     if (!validWords.length) continue;
     validWords.sort((a, b) => a.startMs - b.startMs);
-    lines.push({ startMs: timing.startMs ?? validWords[0].startMs, words: validWords });
+    const lineStartMs = paragraph.hasAttribute("begin") ? timing.startMs : validWords[0].startMs;
+    lines.push({ startMs: lineStartMs, words: validWords });
   }
 
   if (!lines.length) {
