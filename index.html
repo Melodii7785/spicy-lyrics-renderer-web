@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101014">
+  <meta name="description" content="An interactive browser demo for the Spicy Lyrics renderer.">
+  <title>Spicy Lyrics Renderer — Demo</title>
+  <link rel="stylesheet" href="./src/styles.css">
+  <link rel="stylesheet" href="./demo.css">
+  <script type="module" src="./demo.js"></script>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <a class="wordmark" href="./">spicy lyrics<span> / web renderer</span></a>
+      <a class="source-link" href="https://github.com/Melodii7785/spicy-lyrics-renderer-web" target="_blank" rel="noreferrer">view source ↗</a>
+    </header>
+
+    <section class="intro">
+      <p class="eyebrow">BROWSER PLAYGROUND · v0.1.0</p>
+      <h1>Lyrics, but make them <span>spicy.</span></h1>
+      <p class="lede">A tiny live playground for the browser-native renderer. No audio or Spotify required — just press play and watch the words move.</p>
+    </section>
+
+    <section class="player" aria-label="Lyrics demo player">
+      <div class="track-meta">
+        <div class="cover" aria-hidden="true">✳</div>
+        <div>
+          <p class="track-title" id="track-title">A Little More Time</p>
+          <p class="track-subtitle">Renderer test track · original sample lyrics</p>
+        </div>
+        <span class="live-badge"><i></i> LIVE DEMO</span>
+      </div>
+
+      <div class="lyric-stage">
+        <p class="stage-label">NOW SINGING</p>
+        <div id="lyrics" class="lyrics" aria-label="Synchronized lyrics"></div>
+        <p class="stage-hint" id="stage-hint">Press play to begin</p>
+      </div>
+
+      <div class="transport">
+        <div class="time-row">
+          <span id="current-time">0:00</span>
+          <span id="duration">0:00</span>
+        </div>
+        <input id="seek" class="seek" type="range" min="0" max="10000" value="0" step="10" aria-label="Seek playback">
+        <div class="button-row">
+          <button id="restart" class="icon-button" type="button" aria-label="Restart">↺</button>
+          <button id="play" class="play-button" type="button" aria-label="Play">▶</button>
+          <label class="speed-control">SPEED
+            <select id="speed" aria-label="Playback speed">
+              <option value="0.5">0.5×</option>
+              <option value="0.75">0.75×</option>
+              <option value="1" selected>1×</option>
+              <option value="1.25">1.25×</option>
+              <option value="1.5">1.5×</option>
+              <option value="2">2×</option>
+            </select>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <section class="settings" aria-label="Demo settings">
+      <div>
+        <h2>Play with it</h2>
+        <p>Change the sample or toggle the held-word letter motion.</p>
+      </div>
+      <label class="sample-control">LYRICS
+        <select id="sample">
+          <option value="0">A Little More Time</option>
+          <option value="1">Neon Weather</option>
+        </select>
+      </label>
+      <label class="toggle-control">
+        <input id="letters" type="checkbox" checked>
+        <span class="toggle" aria-hidden="true"></span>
+        <span>Letter effects</span>
+      </label>
+    </section>
+
+    <footer>
+      <span>Made for testing, not for sitting still.</span>
+      <span>Spicy Lyrics Renderer · AGPL-3.0-or-later</span>
+    </footer>
+  </main>
+</body>
+</html>
