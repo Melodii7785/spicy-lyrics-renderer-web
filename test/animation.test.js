@@ -12,6 +12,12 @@ test("refreshed motion produces bounded word and dot values", () => {
   assert.equal(RefreshedMotion.emphasis(0.5), 1);
   assert.equal(RefreshedMotion.emphasis(1), 0);
   assert.ok(RefreshedMotion.dotAlpha(1000, 3000, 0) <= 1);
+  const strength = RefreshedMotion.waveStrength(1800, false);
+  const pose = RefreshedMotion.letter(1200, 0, 1, 4, strength, false, 0.5);
+  assert.ok(Number.isFinite(pose.x));
+  assert.ok(Number.isFinite(pose.y));
+  assert.ok(pose.scale >= 1);
+  assert.ok(pose.glow >= 0);
 });
 
 test("spring moves toward its goal and preserves velocity on retarget", () => {
