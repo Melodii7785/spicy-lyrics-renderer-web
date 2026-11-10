@@ -23,20 +23,19 @@ export function getWordProgress(positionMs, startMs, endMs) {
   return clamp((positionMs - startMs) / (endMs - startMs), 0, 1);
 }
 
+function getLineStart(line) {
+  return line.startMs ?? line.words?.[0]?.startMs ?? 0;
+}
+
 /**
- * Finds the line that should be displayed at a playback position.
- * Before the first line and after the last line, the nearest line is returned.
+ * Finds the line active at a playback position.
+ * Before the first line and after the last line, returns the nearest line.
  */
 export function findLineIndex(lines, positionMs) {
   if (!Array.isArray(lines) || lines.length === 0) return -1;
 
-  for (let i = 0; i < lines.length; i += 1) {
-    const line = lines[i];
-    const next = lines[i + 1];
-
-    if (positionMs < (next?.startMs ?? Number.POSITIVE_INFINITY)) {
-      return i;
-    }
+  for (let i = 0; i < lines.length - 1; i += 1) {
+    if (positionMs < getLineStart(lines[i + 1])) return i;
   }
 
   return lines.length - 1;
