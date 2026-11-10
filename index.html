@@ -62,6 +62,30 @@
       </div>
     </section>
 
+    <section class="file-import" aria-label="Import your own files">
+      <div class="import-heading">
+        <div>
+          <h2>Bring your own files</h2>
+          <p>Load a timed TTML lyric file and an audio track from your device. Files stay in your browser.</p>
+        </div>
+        <span class="local-badge">LOCAL ONLY</span>
+      </div>
+      <div class="file-pickers">
+        <label class="file-picker">
+          <span class="file-icon">字幕</span>
+          <span><strong>TTML lyrics</strong><small id="ttml-name">Choose .ttml / .xml</small></span>
+          <input id="ttml-file" type="file" accept=".ttml,.xml,.dfxp,application/xml,text/xml">
+        </label>
+        <label class="file-picker">
+          <span class="file-icon">♫</span>
+          <span><strong>Audio file</strong><small id="audio-name">Choose an audio file</small></span>
+          <input id="audio-file" type="file" accept="audio/*">
+        </label>
+      </div>
+      <p class="import-status" id="import-status" role="status">No files imported yet.</p>
+      <audio id="audio" preload="metadata"></audio>
+    </section>
+
     <section class="settings" aria-label="Demo settings">
       <div>
         <h2>Play with it</h2>
