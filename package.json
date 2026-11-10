@@ -1,0 +1,15 @@
+{
+  "name": "spicy-lyrics-renderer-web",
+  "version": "0.1.0",
+  "description": "A browser-native lyrics renderer port inspired by Spicy Lyrics Mobile.",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./styles.css": "./src/styles.css"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "license": "AGPL-3.0-or-later"
+}
