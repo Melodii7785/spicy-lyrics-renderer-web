@@ -263,3 +263,60 @@ footer {
   footer { flex-direction: column; }
   .live-badge { font-size: 0; }
 }
+
+
+.file-import {
+  margin: 4px 0 10px;
+  padding: 22px;
+  border: 1px solid rgba(198,154,255,.2);
+  border-radius: 15px;
+  background: rgba(34,28,42,.58);
+}
+.import-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+.import-heading h2 { margin: 0 0 6px; font-size: 14px; }
+.import-heading p { max-width: 470px; margin: 0; color: #928b9b; font-size: 11px; line-height: 1.6; }
+.local-badge {
+  padding: 6px 8px;
+  border: 1px solid rgba(155,229,177,.25);
+  border-radius: 6px;
+  color: #9be5b1;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  white-space: nowrap;
+}
+.file-pickers { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; margin-top: 18px; }
+.file-picker {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 13px;
+  border: 1px dashed rgba(255,255,255,.2);
+  border-radius: 10px;
+  background: rgba(255,255,255,.025);
+  cursor: pointer;
+}
+.file-picker:hover { border-color: #c69aff; background: rgba(198,154,255,.06); }
+.file-picker input { display: none; }
+.file-icon {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 9px;
+  background: rgba(198,154,255,.13);
+  color: #d5b6ff;
+  font-size: 15px;
+}
+.file-picker strong, .file-picker small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.file-picker strong { font-size: 11px; }
+.file-picker small { max-width: 210px; margin-top: 4px; color: #928b9b; font-size: 10px; }
+.import-status { margin: 12px 0 0; color: #8f8998; font-size: 10px; line-height: 1.5; }
+.import-status.is-error { color: #ff9eaa; }
+#audio { display: none; }
+@media (max-width: 520px) {
+  .file-pickers { grid-template-columns: 1fr; }
+  .file-import { padding: 17px; }
+}
