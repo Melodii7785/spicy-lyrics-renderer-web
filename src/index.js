@@ -5,4 +5,4 @@ export { SpringSimulation } from "./animation/spring-simulation.js";
 export { CubicSplineInterpolator } from "./animation/cubic-spline.js";
 export { PlaybackClock } from "./playback-clock.js";
 export { segmentGraphemes, isRtlText } from "./graphemes.js";
-\nexport { parseTtml } from "./ttml.js";\n
+export { parseTtml } from "./ttml.js";
