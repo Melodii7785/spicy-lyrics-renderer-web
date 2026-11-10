@@ -49,10 +49,9 @@ function textWords(text, timing) {
   }));
 }
 
-function collectTimedWords(node, inherited, frameRate, output) {
+function collectTimedWords(node, inherited, frameRate, output, state) {
   if (node.nodeType === Node.TEXT_NODE) {
-    const words = textWords(node.nodeValue ?? "", inherited);
-    output.push(...words);
+    textWords(node.nodeValue ?? "", inherited, state, output);
     return;
   }
   if (node.nodeType !== Node.ELEMENT_NODE) return;
@@ -66,13 +65,12 @@ function collectTimedWords(node, inherited, frameRate, output) {
   );
 
   if (tag === "span" && !hasTimedChildren) {
-    const words = textWords(node.textContent ?? "", timing);
-    output.push(...words);
+    textWords(node.textContent ?? "", timing, state, output);
     return;
   }
 
   for (const child of node.childNodes) {
-    collectTimedWords(child, timing, frameRate, output);
+    collectTimedWords(child, timing, frameRate, output, state);
   }
 }
 
@@ -104,7 +102,7 @@ export function parseTtml(source) {
   for (const paragraph of paragraphs) {
     const timing = getTiming(paragraph, { startMs: 0, endMs: null }, frameRate);
     const words = [];
-    collectTimedWords(paragraph, timing, frameRate, words);
+    collectTimedWords(paragraph, timing, frameRate, words, { pendingSpace: false });
     const validWords = words.filter(word =>
       word.text && Number.isFinite(word.startMs) && Number.isFinite(word.endMs)
     );
