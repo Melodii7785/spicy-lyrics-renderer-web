@@ -6,7 +6,8 @@
   overflow-wrap: anywhere;
 }
 
-.spicy-lyrics__word {
+.spicy-lyrics__word:not(.is-letter-group),
+.spicy-lyrics__letter {
   --slr-progress: 0;
   color: transparent;
   background-image: linear-gradient(
@@ -18,5 +19,17 @@
   );
   background-clip: text;
   -webkit-background-clip: text;
-  transition: none;
+}
+
+.spicy-lyrics__letter {
+  display: inline-block;
+  transform: translate3d(
+    calc(var(--slr-x, 0) * 1em),
+    calc(var(--slr-y, 0) * 1em),
+    0
+  ) scale(var(--slr-scale, 1));
+  transform-origin: center bottom;
+  text-shadow: 0 0 calc(var(--slr-glow-radius, 0) * 1em)
+    rgba(255, 255, 255, var(--slr-glow, 0));
+  will-change: transform;
 }
